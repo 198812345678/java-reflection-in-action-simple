@@ -1,7 +1,9 @@
 package com.will.simple.java.reflection.in.action.common;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public class MetaObjUtil {
 
@@ -17,7 +19,7 @@ public class MetaObjUtil {
         Object result = null;
         for (Method method : methods) {
             Class<?>[] parameterTypes = method.getParameterTypes();
-            if (parameterTypes.length == 0) {
+            if (parameterTypes.length == 0 && Modifier.isPublic(method.getModifiers())) {
                 try {
                     result = method.invoke(obj, null);
                 } catch (IllegalAccessException e) {
