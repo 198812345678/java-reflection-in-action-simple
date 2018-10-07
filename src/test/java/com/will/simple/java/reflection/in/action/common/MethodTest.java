@@ -9,4 +9,10 @@ public class MethodTest {
     public void test() {
         MethodUtil.invokeStaticMethod(BaseClass.class, "staticMethod", null, null);
     }
+
+    @Test
+    public void test2() throws Exception {
+        Object printName = MethodUtil.invokeVoidMethod(new BaseClass(), "printName", null, null);
+        System.out.println(printName);
+    }
 }
