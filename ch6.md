@@ -28,3 +28,12 @@
 > listing 6.3中的ConstructOnce不能有任何引用，不然SimpleClassLoaderTest加载的时候ConstructOnce就会被system class loader加载，自定义加载器的findClass方法得不到执行
 > 同时ConstructOnce如果在classPath中，System Class Loader能够加载他，就轮不到自定义加载器加载（因为System Class Loader是parent class loader）
 
+> 6.4
+>> class有三种状态，unloaded,只是一个class文件的状态；loaded，class对象已经被创建；active，有实例或者子类被加载或者有方法在执行
+>> 
+>> 6.4.1
+>>> active class 被替换有两个条件，一要维护所有实例的引用，二要有方法能够把实例从一种实现换到另一种,evolve方法的目的是新的替换实现要根据老的实现生成
+>>> 主要设计思路是，client端通过AbstractProduct获取当前实例的代理对象（TODO 为啥要用代理），AbstractProduct.newInstance返回当前最新实现类的实例化对象，AbstractProduct.reload刷新最新的实现类
+>>
+>> 类签名不改变（不然所有类及其依赖的类名字都要改），所以替换类存在于另外的pakage里；使用不同的类加载器实现替换类，是为了避免使用相同类加载器遇到签名相同的类导致老的类混淆进来（TODO 不同的package怎么会有同名类？）
+>> TODO : 为啥用代理，为啥维护所有老的实现对象，为啥用弱引用
